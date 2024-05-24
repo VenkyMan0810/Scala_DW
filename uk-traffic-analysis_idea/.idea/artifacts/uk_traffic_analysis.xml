@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="uk-traffic-analysis">
+    <output-path>$PROJECT_DIR$/out/artifacts/uk_traffic_analysis</output-path>
+    <root id="archive" name="uk-traffic-analysis.jar">
+      <element id="module-output" name="uk-traffic-analysis" />
+    </root>
+  </artifact>
+</component>

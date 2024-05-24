@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <h1 align="center">
     UK traffic analysis 🚦
 </h1>
@@ -48,3 +49,6 @@ Stay this console open, finally you have to configure tunnel for localhost:8081 
 <a href="https://github.com/DarkKavon/uk-traffic-analysis/graphs/contributors">
   <img src="https://contrib.rocks/image?repo=DarkKavon/uk-traffic-analysis" />
 </a>
+=======
+# Scala_DW
+>>>>>>> 0a3a2274584aa9b3334c1f8f95ac5fa42e42f21f
