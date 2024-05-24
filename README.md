@@ -1,6 +1,5 @@
-<<<<<<< HEAD
 <h1 align="center">
-    UK traffic analysis 🚦
+    UK traffic analysis
 </h1>
 
 ## About
@@ -29,7 +28,7 @@ Now you need to save credentials for Airflow service which will be:
 - username: admin
 - password: <i>Copy the one which will be shown on your screen in SSH CLI</i>
 
-Then stop Airflow service, create <i>dags</i> folder inside <i>airflow</i>, move jars and project2.py file to proper destinations and run Airflow once again:
+Then stop the Airflow service, create <i>dags</i> folder inside <i>airflow</i>, move jars and project2.py file to proper destinations and run Airflow once again:
 
 ```
 mkdir -p ~/airflow/dags/project_files
@@ -43,12 +42,3 @@ Stay this console open, finally you have to configure tunnel for localhost:8081 
 
 ## Warehouse schema
 ![Warehouse schema](./warehouse_schema.png)
-
-## Contributors
-
-<a href="https://github.com/DarkKavon/uk-traffic-analysis/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=DarkKavon/uk-traffic-analysis" />
-</a>
-=======
-# Scala_DW
->>>>>>> 0a3a2274584aa9b3334c1f8f95ac5fa42e42f21f
