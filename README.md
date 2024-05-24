@@ -28,7 +28,7 @@ Now you need to save credentials for Airflow service which will be:
 - username: admin
 - password: <i>Copy the one which will be shown on your screen in SSH CLI</i>
 
-Then stop the Airflow service, create <i>dags</i> folder inside <i>airflow</i>, move jars and project2.py file to proper destinations and run Airflow once again:
+Then stop Airflow service, create <i>dags</i> folder inside <i>airflow</i>, move jars and project2.py file to proper destinations and run Airflow once again:
 
 ```
 mkdir -p ~/airflow/dags/project_files
