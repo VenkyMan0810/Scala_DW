@@ -1,0 +1,1471 @@
+﻿{
+  "paragraphs": [
+    {
+      "text": "import org.apache.spark.sql._\nimport org.apache.spark.sql.functions._\nimport spark.implicits._\nimport org.apache.spark.sql.expressions.Window",
+      "user": "anonymous",
+      "dateUpdated": "2023-01-18T14:38:24+0000",
+      "progress": 0,
+      "config": {
+        "editorSetting": {
+          "completionKey": "TAB",
+          "editOnDblClick": false,
+          "completionSupport": true,
+          "language": "scala"
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/scala",
+        "fontSize": 9,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "import org.apache.spark.sql._\nimport org.apache.spark.sql.functions._\nimport spark.implicits._\nimport org.apache.spark.sql.expressions.Window\n"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1673112447562_969353088",
+      "id": "paragraph_1672404546136_1726991734",
+      "dateCreated": "2023-01-07T17:27:27+0000",
+      "dateStarted": "2023-01-18T14:38:25+0000",
+      "dateFinished": "2023-01-18T14:39:01+0000",
+      "status": "FINISHED",
+      "focus": true,
+      "$$hashKey": "object:414"
+    },
+    {
+      "text": "%md\n**1. Number of vehicles (measure) in the following regions (first dimension), divided by weather type (second dimension) for a chosen year and month (third dimension).**",
+      "user": "anonymous",
+      "dateUpdated": "2023-01-07T17:27:27+0000",
+      "progress": 0,
+      "config": {
+        "tableHide": false,
+        "editorSetting": {
+          "language": "markdown",
+          "editOnDblClick": true,
+          "completionKey": "TAB",
+          "completionSupport": false
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/markdown",
+        "fontSize": 9,
+        "editorHide": true,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "HTML",
+            "data": "<div class=\"markdown-body\">\n<p><strong>1. Number of vehicles (measure) in the following regions (first dimension), divided by weather type (second dimension) for a chosen year and month (third dimension).</strong></p>\n\n</div>"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1673112447566_1921620641",
+      "id": "paragraph_1671557420139_839958942",
+      "dateCreated": "2023-01-07T17:27:27+0000",
+      "status": "READY",
+      "$$hashKey": "object:415"
+    },
+    {
+      "text": "val factDF = spark.read.format(\"delta\").load(\"/tmp/delta/fact\")\n                            .select(\"region_auth_id\", \"weather_id\", \"timestamp_id\", \"sum_all_motor_vehicles\", \"sum_all_vehicles\")\nval timeDF = spark.read.format(\"delta\").load(\"/tmp/delta/dim_time\")\n                            .select(\"timestamp_id\", \"year\", \"month\")\nval weatherDF = spark.read.format(\"delta\").load(\"/tmp/delta/dim_weather\")\n                            .select(\"weather_id\", \"condition\")\nval regionsDF = spark.read.format(\"delta\").load(\"/tmp/delta/dim_regions\")\n                            .select(\"region_auth_id\", \"region_id\", \"region_name\")",
+      "user": "anonymous",
+      "dateUpdated": "2023-01-18T15:25:08+0000",
+      "progress": 94,
+      "config": {
+        "tableHide": false,
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/scala",
+        "fontSize": 9,
+        "editorHide": false,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {
+          "name": "michal1"
+        },
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "\u001b[1m\u001b[34mfactDF\u001b[0m: \u001b[1m\u001b[32morg.apache.spark.sql.DataFrame\u001b[0m = [region_auth_id: int, weather_id: string ... 3 more fields]\n\u001b[1m\u001b[34mtimeDF\u001b[0m: \u001b[1m\u001b[32morg.apache.spark.sql.DataFrame\u001b[0m = [timestamp_id: bigint, year: int ... 1 more field]\n\u001b[1m\u001b[34mweatherDF\u001b[0m: \u001b[1m\u001b[32morg.apache.spark.sql.DataFrame\u001b[0m = [weather_id: string, condition: string]\n\u001b[1m\u001b[34mregionsDF\u001b[0m: \u001b[1m\u001b[32morg.apache.spark.sql.DataFrame\u001b[0m = [region_auth_id: int, region_id: int ... 1 more field]\n"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1673112447566_946732742",
+      "id": "paragraph_1671557578165_1801070587",
+      "dateCreated": "2023-01-07T17:27:27+0000",
+      "dateStarted": "2023-01-18T15:25:08+0000",
+      "dateFinished": "2023-01-18T15:25:08+0000",
+      "status": "FINISHED",
+      "$$hashKey": "object:416"
+    },
+    {
+      "text": "val timeDF = dimTimeDF\nval weatherDF = dimWeatherDF\nval regionsDF = dimRegionDF.withColumn(\"region_name_1\", $\"region_name\")",
+      "user": "anonymous",
+      "dateUpdated": "2023-01-18T14:51:14+0000",
+      "progress": 0,
+      "config": {
+        "editorSetting": {
+          "completionKey": "TAB",
+          "editOnDblClick": false,
+          "completionSupport": true,
+          "language": "scala"
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/scala",
+        "fontSize": 9,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "\u001b[1m\u001b[34mtimeDF\u001b[0m: \u001b[1m\u001b[32morg.apache.spark.sql.Dataset[org.apache.spark.sql.Row]\u001b[0m = [timestamp_id: bigint, year: int ... 3 more fields]\n\u001b[1m\u001b[34mweatherDF\u001b[0m: \u001b[1m\u001b[32morg.apache.spark.sql.DataFrame\u001b[0m = [weather_id: string, condition: string ... 2 more fields]\n\u001b[1m\u001b[34mregionsDF\u001b[0m: \u001b[1m\u001b[32morg.apache.spark.sql.Dataset[org.apache.spark.sql.Row]\u001b[0m = [region_auth_id: int, region_id: int ... 3 more fields]\n"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1673120345957_38969716",
+      "id": "paragraph_1673120345957_38969716",
+      "dateCreated": "2023-01-07T19:39:05+0000",
+      "dateStarted": "2023-01-18T14:51:12+0000",
+      "dateFinished": "2023-01-18T14:51:12+0000",
+      "status": "FINISHED",
+      "$$hashKey": "object:417"
+    },
+    {
+      "text": "import io.delta.implicits._\nval analysis1DF = factDF.\n    join(timeDF, factDF(\"timestamp_id\") === timeDF(\"timestamp_id\")).\n    join(weatherDF, factDF(\"weather_id\") === weatherDF(\"weather_id\")).\n    join(regionsDF, factDF(\"region_auth_id\") === regionsDF(\"region_auth_id\")).\n    withColumn(\"particular_month\", concat(timeDF(\"year\"), lit(\"-\"), timeDF(\"month\"))).na.fill(\"No value\").\n    // withColumn(\"regions_name\", $\"region_name\").\n    groupBy(col(\"particular_month\"), col(\"region_name\")).\n    pivot(\"condition\").\n    agg(sum(\"sum_all_vehicles\").as(\"sum_all_vehicles\")).na.fill(0)\n    \nanalysis1DF.show(100, false)",
+      "user": "anonymous",
+      "dateUpdated": "2023-01-18T15:32:52+0000",
+      "progress": 0,
+      "config": {
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/scala",
+        "fontSize": 9,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "+----------------+------------------------+--------------------+-----------------------+-----+-----------------------+--------------------------+-----------------------+-------+\n|particular_month|region_name             |Fine with high winds|Fine without high winds|Other|Raining with high winds|Raining without high winds|Snowing with high winds|Unknown|\n+----------------+------------------------+--------------------+-----------------------+-----+-----------------------+--------------------------+-----------------------+-------+\n|2007-9          |Wales                   |0                   |13539                  |0    |0                      |0                         |0                      |0      |\n|2006-4          |Wales                   |156                 |23558                  |468  |195                    |2886                      |0                      |585    |\n|2007-6          |East Midlands           |0                   |14375                  |0    |0                      |0                         |0                      |0      |\n|2011-5          |West Midlands           |0                   |16202                  |0    |0                      |0                         |0                      |0      |\n|2006-7          |Wales                   |0                   |16431                  |0    |0                      |0                         |0                      |0      |\n|2009-6          |West Midlands           |0                   |7819                   |0    |0                      |0                         |0                      |0      |\n|2012-10         |North West              |0                   |4604                   |0    |0                      |0                         |0                      |0      |\n|2006-3          |North West              |0                   |4630                   |0    |0                      |0                         |0                      |0      |\n|2006-9          |North East              |0                   |13587                  |1754 |0                      |0                         |0                      |0      |\n|2006-9          |Yorkshire and The Humber|0                   |27085                  |6163 |0                      |0                         |0                      |0      |\n|2009-9          |South East              |0                   |15297                  |0    |0                      |0                         |0                      |0      |\n|2011-5          |London                  |0                   |6238                   |0    |0                      |0                         |0                      |0      |\n|2009-6          |South West              |0                   |4079                   |0    |0                      |0                         |0                      |0      |\n|2006-9          |South West              |0                   |23063                  |8847 |0                      |0                         |0                      |0      |\n|2005-4          |Yorkshire and The Humber|0                   |15600                  |0    |0                      |0                         |0                      |0      |\n|2006-6          |Yorkshire and The Humber|0                   |48332                  |0    |0                      |0                         |0                      |0      |\n|2009-9          |South West              |0                   |20952                  |0    |0                      |0                         |0                      |0      |\n|2012-10         |North East              |0                   |10977                  |0    |0                      |0                         |0                      |0      |\n|2010-10         |Wales                   |0                   |0                      |0    |0                      |0                         |2656                   |0      |\n|2006-7          |North East              |0                   |3445                   |0    |0                      |0                         |0                      |0      |\n|2009-6          |East Midlands           |0                   |15743                  |0    |0                      |0                         |0                      |0      |\n|2006-4          |South East              |0                   |11689                  |0    |0                      |0                         |0                      |0      |\n|2005-5          |London                  |0                   |17812                  |0    |0                      |0                         |0                      |7823   |\n|2013-10         |South East              |0                   |15691                  |0    |0                      |0                         |0                      |0      |\n|2009-6          |London                  |0                   |19122                  |0    |0                      |0                         |0                      |0      |\n|2006-3          |London                  |0                   |10122                  |0    |0                      |0                         |0                      |0      |\n|2006-4          |West Midlands           |0                   |14095                  |0    |0                      |0                         |0                      |0      |\n|2006-7          |South East              |0                   |30848                  |0    |0                      |0                         |0                      |0      |\n|2007-9          |Scotland                |0                   |3805                   |0    |0                      |0                         |0                      |0      |\n|2005-5          |Yorkshire and The Humber|0                   |4519                   |0    |0                      |0                         |0                      |15840  |\n|2006-3          |North East              |0                   |2302                   |0    |0                      |0                         |0                      |0      |\n|2009-9          |North West              |0                   |15815                  |0    |0                      |0                         |0                      |0      |\n|2005-5          |South East              |0                   |22285                  |0    |0                      |0                         |0                      |13767  |\n|2006-10         |North East              |0                   |4956                   |0    |0                      |662                       |0                      |0      |\n|2013-10         |London                  |0                   |15210                  |0    |0                      |0                         |0                      |0      |\n|2011-5          |Yorkshire and The Humber|0                   |6588                   |0    |0                      |0                         |0                      |0      |\n|2010-10         |East Midlands           |0                   |0                      |0    |0                      |0                         |2866                   |0      |\n|2006-10         |Scotland                |0                   |10165                  |0    |0                      |1880                      |0                      |0      |\n|2011-5          |East Midlands           |0                   |8877                   |0    |0                      |0                         |0                      |0      |\n|2010-10         |London                  |0                   |0                      |0    |0                      |0                         |6216                   |0      |\n|2007-6          |East of England         |0                   |37077                  |0    |0                      |0                         |0                      |0      |\n|2005-4          |South West              |0                   |8861                   |0    |0                      |0                         |0                      |0      |\n|2006-10         |South West              |0                   |7665                   |0    |0                      |10818                     |0                      |0      |\n|2005-4          |North East              |0                   |5010                   |0    |0                      |0                         |0                      |0      |\n|2006-9          |South East              |0                   |66467                  |25837|0                      |0                         |0                      |0      |\n|2006-3          |Scotland                |0                   |13097                  |0    |0                      |0                         |0                      |0      |\n|2005-5          |North West              |0                   |12003                  |0    |0                      |0                         |0                      |29272  |\n|2009-6          |South East              |0                   |45679                  |0    |0                      |0                         |0                      |0      |\n|2006-10         |London                  |0                   |5528                   |0    |0                      |9119                      |0                      |0      |\n|2012-10         |Scotland                |0                   |3849                   |0    |0                      |0                         |0                      |0      |\n|2009-9          |West Midlands           |0                   |18913                  |0    |0                      |0                         |0                      |0      |\n|2006-10         |East Midlands           |0                   |2093                   |0    |0                      |7612                      |0                      |0      |\n|2010-10         |North East              |0                   |0                      |0    |0                      |0                         |2904                   |0      |\n|2012-10         |West Midlands           |0                   |9623                   |0    |0                      |0                         |0                      |0      |\n|2011-5          |East of England         |0                   |7006                   |0    |0                      |0                         |0                      |0      |\n|2006-6          |South East              |0                   |23128                  |0    |0                      |0                         |0                      |0      |\n|2005-4          |East of England         |0                   |6745                   |0    |0                      |0                         |0                      |0      |\n|2006-3          |Wales                   |0                   |4778                   |0    |0                      |0                         |0                      |0      |\n|2006-6          |Wales                   |0                   |5736                   |0    |0                      |0                         |0                      |0      |\n|2007-6          |Wales                   |0                   |20761                  |0    |0                      |0                         |0                      |0      |\n|2006-7          |East Midlands           |0                   |11214                  |0    |0                      |0                         |0                      |0      |\n|2005-4          |London                  |0                   |7043                   |0    |0                      |0                         |0                      |0      |\n|2007-6          |Yorkshire and The Humber|0                   |31696                  |0    |0                      |0                         |0                      |0      |\n|2006-6          |South West              |0                   |36678                  |0    |0                      |0                         |0                      |0      |\n|2007-9          |East of England         |0                   |18211                  |0    |0                      |0                         |0                      |0      |\n|2006-9          |North West              |0                   |26232                  |15584|0                      |0                         |0                      |0      |\n|2007-9          |North West              |0                   |14796                  |0    |0                      |0                         |0                      |0      |\n|2006-9          |East of England         |0                   |34086                  |17508|0                      |0                         |0                      |0      |\n|2012-10         |Wales                   |0                   |7398                   |0    |0                      |0                         |0                      |0      |\n|2006-10         |North West              |0                   |7544                   |0    |0                      |15843                     |0                      |0      |\n|2006-9          |West Midlands           |0                   |14729                  |10263|0                      |0                         |0                      |0      |\n|2011-5          |North West              |0                   |28574                  |0    |0                      |0                         |0                      |0      |\n|2005-5          |Scotland                |0                   |3796                   |0    |0                      |0                         |0                      |5234   |\n|2012-10         |East Midlands           |0                   |4564                   |0    |0                      |0                         |0                      |0      |\n|2006-9          |Wales                   |0                   |11832                  |5007 |0                      |0                         |0                      |0      |\n|2006-6          |North East              |0                   |17530                  |0    |0                      |0                         |0                      |0      |\n|2009-3          |Scotland                |0                   |8754                   |0    |0                      |0                         |0                      |0      |\n|2009-6          |North West              |0                   |15349                  |0    |0                      |0                         |0                      |0      |\n|2009-3          |Yorkshire and The Humber|0                   |11258                  |0    |0                      |0                         |0                      |0      |\n|2005-5          |East of England         |0                   |7225                   |0    |0                      |0                         |0                      |9620   |\n|2009-9          |East of England         |0                   |12302                  |0    |0                      |0                         |0                      |0      |\n|2005-5          |Wales                   |0                   |1477                   |0    |0                      |0                         |0                      |7776   |\n|2005-4          |North West              |0                   |10069                  |0    |0                      |0                         |0                      |0      |\n|2013-10         |North East              |0                   |3185                   |0    |0                      |0                         |0                      |0      |\n|2009-6          |Wales                   |0                   |7042                   |0    |0                      |0                         |0                      |0      |\n|2006-7          |Scotland                |0                   |592                    |0    |0                      |0                         |0                      |0      |\n|2009-6          |Yorkshire and The Humber|0                   |4507                   |0    |0                      |0                         |0                      |0      |\n|2012-10         |London                  |0                   |23716                  |0    |0                      |0                         |0                      |0      |\n|2009-9          |Scotland                |0                   |6013                   |0    |0                      |0                         |0                      |0      |\n|2006-4          |North West              |0                   |11466                  |0    |0                      |0                         |0                      |0      |\n|2006-4          |North East              |0                   |2011                   |0    |0                      |0                         |0                      |0      |\n|2009-9          |East Midlands           |0                   |11634                  |0    |0                      |0                         |0                      |0      |\n|2006-10         |Yorkshire and The Humber|0                   |4221                   |0    |0                      |8933                      |0                      |0      |\n|2007-9          |South East              |0                   |33174                  |0    |0                      |0                         |0                      |0      |\n|2005-5          |West Midlands           |0                   |4590                   |0    |0                      |0                         |0                      |15334  |\n|2010-10         |West Midlands           |0                   |0                      |0    |0                      |0                         |15083                  |0      |\n|2009-9          |North East              |0                   |7949                   |0    |0                      |0                         |0                      |0      |\n|2006-10         |West Midlands           |0                   |15826                  |0    |0                      |22491                     |0                      |0      |\n|2013-10         |Yorkshire and The Humber|0                   |9758                   |0    |0                      |0                         |0                      |0      |\n|2012-10         |South West              |0                   |9080                   |0    |0                      |0                         |0                      |0      |\n+----------------+------------------------+--------------------+-----------------------+-----+-----------------------+--------------------------+-----------------------+-------+\nonly showing top 100 rows\n\nimport io.delta.implicits._\n\u001b[1m\u001b[34manalysis1DF\u001b[0m: \u001b[1m\u001b[32morg.apache.spark.sql.DataFrame\u001b[0m = [particular_month: string, region_name: string ... 7 more fields]\n"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {
+        "jobUrl": {
+          "propertyName": "jobUrl",
+          "label": "SPARK JOB",
+          "tooltip": "View in Spark web UI",
+          "group": "spark",
+          "values": [
+            {
+              "jobUrl": "http://my-cluster-m.europe-west4-a.c.put-big-data-2022-10-mc.internal:42179/jobs/job?id=86",
+              "$$hashKey": "object:1152"
+            },
+            {
+              "jobUrl": "http://my-cluster-m.europe-west4-a.c.put-big-data-2022-10-mc.internal:42179/jobs/job?id=87",
+              "$$hashKey": "object:1153"
+            },
+            {
+              "jobUrl": "http://my-cluster-m.europe-west4-a.c.put-big-data-2022-10-mc.internal:42179/jobs/job?id=88",
+              "$$hashKey": "object:1154"
+            },
+            {
+              "jobUrl": "http://my-cluster-m.europe-west4-a.c.put-big-data-2022-10-mc.internal:42179/jobs/job?id=89",
+              "$$hashKey": "object:1155"
+            },
+            {
+              "jobUrl": "http://my-cluster-m.europe-west4-a.c.put-big-data-2022-10-mc.internal:42179/jobs/job?id=93",
+              "$$hashKey": "object:1156"
+            },
+            {
+              "jobUrl": "http://my-cluster-m.europe-west4-a.c.put-big-data-2022-10-mc.internal:42179/jobs/job?id=94",
+              "$$hashKey": "object:1157"
+            },
+            {
+              "jobUrl": "http://my-cluster-m.europe-west4-a.c.put-big-data-2022-10-mc.internal:42179/jobs/job?id=95",
+              "$$hashKey": "object:1158"
+            },
+            {
+              "jobUrl": "http://my-cluster-m.europe-west4-a.c.put-big-data-2022-10-mc.internal:42179/jobs/job?id=96",
+              "$$hashKey": "object:1159"
+            },
+            {
+              "jobUrl": "http://my-cluster-m.europe-west4-a.c.put-big-data-2022-10-mc.internal:42179/jobs/job?id=97",
+              "$$hashKey": "object:1160"
+            },
+            {
+              "jobUrl": "http://my-cluster-m.europe-west4-a.c.put-big-data-2022-10-mc.internal:42179/jobs/job?id=98",
+              "$$hashKey": "object:1161"
+            },
+            {
+              "jobUrl": "http://my-cluster-m.europe-west4-a.c.put-big-data-2022-10-mc.internal:42179/jobs/job?id=99",
+              "$$hashKey": "object:1162"
+            },
+            {
+              "jobUrl": "http://my-cluster-m.europe-west4-a.c.put-big-data-2022-10-mc.internal:42179/jobs/job?id=100",
+              "$$hashKey": "object:1163"
+            },
+            {
+              "jobUrl": "http://my-cluster-m.europe-west4-a.c.put-big-data-2022-10-mc.internal:42179/jobs/job?id=104",
+              "$$hashKey": "object:1164"
+            },
+            {
+              "jobUrl": "http://my-cluster-m.europe-west4-a.c.put-big-data-2022-10-mc.internal:42179/jobs/job?id=105",
+              "$$hashKey": "object:1165"
+            },
+            {
+              "jobUrl": "http://my-cluster-m.europe-west4-a.c.put-big-data-2022-10-mc.internal:42179/jobs/job?id=106",
+              "$$hashKey": "object:1166"
+            }
+          ],
+          "interpreterSettingId": "spark"
+        }
+      },
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1673112447566_1313636296",
+      "id": "paragraph_1671558553094_1518781811",
+      "dateCreated": "2023-01-07T17:27:27+0000",
+      "dateStarted": "2023-01-18T15:32:52+0000",
+      "dateFinished": "2023-01-18T15:33:08+0000",
+      "status": "FINISHED",
+      "$$hashKey": "object:418"
+    },
+    {
+      "text": "val vehicles_number = analysis1DF.\n    where($\"particular_month\" === z.textbox(\"particular month (yyyy-MM) e.g. 1990-7, 2002-10\"))\n\nvehicles_number.createOrReplaceTempView(\"analysis1_vehicles_number\")",
+      "user": "anonymous",
+      "dateUpdated": "2023-01-18T15:37:08+0000",
+      "progress": 0,
+      "config": {
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/scala",
+        "fontSize": 9,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {
+          "weather condition": "",
+          "region name": "Scotland",
+          "year": "",
+          "particular month (yyyy-MM)": "2001-10",
+          "particular month (yyyy-MM) e.g 1990-7, 2002-10": "2006-4",
+          "particular month (yyyy-MM) e.g. 1990-7, 2002-10": "2006-4"
+        },
+        "forms": {
+          "particular month (yyyy-MM) e.g. 1990-7, 2002-10": {
+            "type": "TextBox",
+            "name": "particular month (yyyy-MM) e.g. 1990-7, 2002-10",
+            "displayName": "particular month (yyyy-MM) e.g. 1990-7, 2002-10",
+            "defaultValue": "",
+            "hidden": false,
+            "$$hashKey": "object:777"
+          }
+        }
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "\u001b[1m\u001b[34mvehicles_number\u001b[0m: \u001b[1m\u001b[32morg.apache.spark.sql.Dataset[org.apache.spark.sql.Row]\u001b[0m = [particular_month: string, region_name: string ... 7 more fields]\n"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1673112447566_1423350151",
+      "id": "paragraph_1671560172469_435997484",
+      "dateCreated": "2023-01-07T17:27:27+0000",
+      "dateStarted": "2023-01-18T15:37:08+0000",
+      "dateFinished": "2023-01-18T15:37:08+0000",
+      "status": "FINISHED",
+      "$$hashKey": "object:419"
+    },
+    {
+      "text": "%sql\nselect * from analysis1_vehicles_number",
+      "user": "anonymous",
+      "dateUpdated": "2023-01-18T15:35:23+0000",
+      "progress": 75,
+      "config": {
+        "editorSetting": {
+          "language": "sql",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "colWidth": 11,
+        "editorMode": "ace/mode/sql",
+        "fontSize": 9,
+        "results": {
+          "0": {
+            "graph": {
+              "mode": "multiBarChart",
+              "height": 718.844,
+              "optionOpen": true,
+              "setting": {
+                "table": {
+                  "tableGridState": {},
+                  "tableColumnTypeState": {
+                    "names": {
+                      "particular_month": "string",
+                      "region_name": "string",
+                      "Fine with high winds": "string",
+                      "Fine without high winds": "string",
+                      "Other": "string",
+                      "Raining with high winds": "string",
+                      "Raining without high winds": "string",
+                      "Snowing with high winds": "string",
+                      "Unknown": "string"
+                    },
+                    "updated": false
+                  },
+                  "tableOptionSpecHash": "[{\"name\":\"useFilter\",\"valueType\":\"boolean\",\"defaultValue\":false,\"widget\":\"checkbox\",\"description\":\"Enable filter for columns\"},{\"name\":\"showPagination\",\"valueType\":\"boolean\",\"defaultValue\":false,\"widget\":\"checkbox\",\"description\":\"Enable pagination for better navigation\"},{\"name\":\"showAggregationFooter\",\"valueType\":\"boolean\",\"defaultValue\":false,\"widget\":\"checkbox\",\"description\":\"Enable a footer for displaying aggregated values\"}]",
+                  "tableOptionValue": {
+                    "useFilter": false,
+                    "showPagination": false,
+                    "showAggregationFooter": false
+                  },
+                  "updated": false,
+                  "initialized": false
+                },
+                "multiBarChart": {
+                  "rotate": {
+                    "degree": "-90"
+                  },
+                  "xLabelStatus": "default",
+                  "stacked": false
+                }
+              },
+              "commonSetting": {},
+              "keys": [
+                {
+                  "name": "region_name",
+                  "index": 1,
+                  "aggr": "sum"
+                }
+              ],
+              "groups": [],
+              "values": [
+                {
+                  "name": "Fine with high winds",
+                  "index": 2,
+                  "aggr": "sum"
+                },
+                {
+                  "name": "Fine without high winds",
+                  "index": 3,
+                  "aggr": "sum"
+                },
+                {
+                  "name": "Other",
+                  "index": 4,
+                  "aggr": "sum"
+                },
+                {
+                  "name": "Raining with high winds",
+                  "index": 5,
+                  "aggr": "sum"
+                },
+                {
+                  "name": "Raining without high winds",
+                  "index": 6,
+                  "aggr": "sum"
+                },
+                {
+                  "name": "Snowing with high winds",
+                  "index": 7,
+                  "aggr": "sum"
+                },
+                {
+                  "name": "Unknown",
+                  "index": 8,
+                  "aggr": "sum"
+                }
+              ]
+            },
+            "helium": {}
+          }
+        },
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TABLE",
+            "data": "particular_month\tregion_name\tFine with high winds\tFine without high winds\tOther\tRaining with high winds\tRaining without high winds\tSnowing with high winds\tUnknown\n2006-4\tWales\t156\t23558\t468\t195\t2886\t0\t585\n2006-4\tSouth East\t0\t11689\t0\t0\t0\t0\t0\n2006-4\tWest Midlands\t0\t14095\t0\t0\t0\t0\t0\n2006-4\tNorth West\t0\t11466\t0\t0\t0\t0\t0\n2006-4\tNorth East\t0\t2011\t0\t0\t0\t0\t0\n2006-4\tEast of England\t0\t11836\t0\t0\t0\t0\t0\n2006-4\tEast Midlands\t0\t1253\t0\t0\t0\t0\t0\n2006-4\tScotland\t0\t6439\t0\t0\t0\t0\t0\n2006-4\tSouth West\t0\t10032\t0\t0\t0\t0\t0\n2006-4\tLondon\t0\t10279\t0\t0\t0\t0\t0\n2006-4\tYorkshire and The Humber\t0\t5196\t0\t0\t0\t0\t0\n"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {
+        "jobUrl": {
+          "propertyName": "jobUrl",
+          "label": "SPARK JOB",
+          "tooltip": "View in Spark web UI",
+          "group": "spark",
+          "values": [
+            {
+              "jobUrl": "http://my-cluster-m.europe-west4-a.c.put-big-data-2022-10-mc.internal:42179/jobs/job?id=125",
+              "$$hashKey": "object:1308"
+            },
+            {
+              "jobUrl": "http://my-cluster-m.europe-west4-a.c.put-big-data-2022-10-mc.internal:42179/jobs/job?id=126",
+              "$$hashKey": "object:1309"
+            },
+            {
+              "jobUrl": "http://my-cluster-m.europe-west4-a.c.put-big-data-2022-10-mc.internal:42179/jobs/job?id=127",
+              "$$hashKey": "object:1310"
+            },
+            {
+              "jobUrl": "http://my-cluster-m.europe-west4-a.c.put-big-data-2022-10-mc.internal:42179/jobs/job?id=128",
+              "$$hashKey": "object:1311"
+            },
+            {
+              "jobUrl": "http://my-cluster-m.europe-west4-a.c.put-big-data-2022-10-mc.internal:42179/jobs/job?id=132",
+              "$$hashKey": "object:1312"
+            },
+            {
+              "jobUrl": "http://my-cluster-m.europe-west4-a.c.put-big-data-2022-10-mc.internal:42179/jobs/job?id=133",
+              "$$hashKey": "object:1313"
+            },
+            {
+              "jobUrl": "http://my-cluster-m.europe-west4-a.c.put-big-data-2022-10-mc.internal:42179/jobs/job?id=134",
+              "$$hashKey": "object:1314"
+            }
+          ],
+          "interpreterSettingId": "spark"
+        }
+      },
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1673112447567_417109234",
+      "id": "paragraph_1671560485591_1196096694",
+      "dateCreated": "2023-01-07T17:27:27+0000",
+      "dateStarted": "2023-01-18T15:35:07+0000",
+      "dateFinished": "2023-01-18T15:35:13+0000",
+      "status": "FINISHED",
+      "$$hashKey": "object:420"
+    },
+    {
+      "text": "%md\n**2. Number of trucks (measure) in the following regions (first dimension), divided by road category (second dimension) for a chosen year and month (third dimension).**",
+      "user": "anonymous",
+      "dateUpdated": "2023-01-18T08:41:22+0000",
+      "progress": 0,
+      "config": {
+        "tableHide": false,
+        "editorSetting": {
+          "language": "markdown",
+          "editOnDblClick": true,
+          "completionKey": "TAB",
+          "completionSupport": false
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/markdown",
+        "fontSize": 9,
+        "editorHide": true,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "HTML",
+            "data": "<div class=\"markdown-body\">\n<p><strong>2. Number of trucks (measure) in the following regions (first dimension), divided by road category (second dimension) for a chosen year and month (third dimension).</strong></p>\n\n</div>"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1673112447567_1681847094",
+      "id": "paragraph_1671562533917_1423333069",
+      "dateCreated": "2023-01-07T17:27:27+0000",
+      "dateStarted": "2023-01-18T08:41:22+0000",
+      "dateFinished": "2023-01-18T08:41:22+0000",
+      "status": "FINISHED",
+      "$$hashKey": "object:421"
+    },
+    {
+      "text": "val factDF = spark.read.format(\"delta\").load(\"/tmp/delta/fact\")\n                            .select(\"region_auth_id\", \"timestamp_id\", \"sum_hgvs\", \"road_id\")\nval roadDF = spark.read.format(\"delta\").load(\"/tmp/delta/dim_road\")\n                            .select(\"road_id\", \"road_type\", \"road_category\")\nval regionsDF = spark.read.format(\"delta\").load(\"/tmp/delta/dim_regions\")\n                            .select(\"region_auth_id\", \"region_name\")\nval timeDF = spark.read.format(\"delta\").load(\"/tmp/delta/dim_time\")\n                            .select(\"timestamp_id\", \"year\", \"month\", \"day\")",
+      "user": "anonymous",
+      "dateUpdated": "2023-01-18T15:35:51+0000",
+      "progress": 98,
+      "config": {
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/scala",
+        "fontSize": 9,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "\u001b[1m\u001b[34mfactDF\u001b[0m: \u001b[1m\u001b[32morg.apache.spark.sql.DataFrame\u001b[0m = [region_auth_id: int, timestamp_id: int ... 2 more fields]\n\u001b[1m\u001b[34mroadDF\u001b[0m: \u001b[1m\u001b[32morg.apache.spark.sql.DataFrame\u001b[0m = [road_id: int, road_type: string ... 1 more field]\n\u001b[1m\u001b[34mregionsDF\u001b[0m: \u001b[1m\u001b[32morg.apache.spark.sql.DataFrame\u001b[0m = [region_auth_id: int, region_name: string]\n\u001b[1m\u001b[34mtimeDF\u001b[0m: \u001b[1m\u001b[32morg.apache.spark.sql.DataFrame\u001b[0m = [timestamp_id: bigint, year: int ... 2 more fields]\n"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {
+        "jobUrl": {
+          "propertyName": "jobUrl",
+          "label": "SPARK JOB",
+          "tooltip": "View in Spark web UI",
+          "group": "spark",
+          "values": [
+            {
+              "jobUrl": "http://my-cluster-m.europe-west4-a.c.put-big-data-2022-10-mc.internal:42179/jobs/job?id=135",
+              "$$hashKey": "object:1424"
+            },
+            {
+              "jobUrl": "http://my-cluster-m.europe-west4-a.c.put-big-data-2022-10-mc.internal:42179/jobs/job?id=136",
+              "$$hashKey": "object:1425"
+            },
+            {
+              "jobUrl": "http://my-cluster-m.europe-west4-a.c.put-big-data-2022-10-mc.internal:42179/jobs/job?id=137",
+              "$$hashKey": "object:1426"
+            }
+          ],
+          "interpreterSettingId": "spark"
+        }
+      },
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1673112447567_1897304705",
+      "id": "paragraph_1671563791184_2140292651",
+      "dateCreated": "2023-01-07T17:27:27+0000",
+      "dateStarted": "2023-01-18T15:35:52+0000",
+      "dateFinished": "2023-01-18T15:35:55+0000",
+      "status": "FINISHED",
+      "$$hashKey": "object:422"
+    },
+    {
+      "text": "val analysis2DF = factDF.\n    join(timeDF, \"timestamp_id\").\n    join(roadDF, \"road_id\").\n    join(regionsDF, \"region_auth_id\").\n    withColumn(\"particular_month\", concat(timeDF(\"year\"), lit(\"-\"), timeDF(\"month\"))).\n    groupBy(col(\"particular_month\"), regionsDF(\"region_name\")).\n    pivot(\"road_category\").\n    agg(sum(\"sum_hgvs\").as(\"sum_trucks\")).na.fill(0)\n\nanalysis2DF.show(100, false)",
+      "user": "anonymous",
+      "dateUpdated": "2023-01-18T15:36:36+0000",
+      "progress": 0,
+      "config": {
+        "editorSetting": {
+          "completionKey": "TAB",
+          "editOnDblClick": false,
+          "completionSupport": true,
+          "language": "scala"
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/scala",
+        "fontSize": 9,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "+----------------+------------------------+-----+----+------+----+------+------+\n|particular_month|region_name             |MB   |MCU |PA    |PM  |TA    |TM    |\n+----------------+------------------------+-----+----+------+----+------+------+\n|2012-9          |Yorkshire and The Humber|2412 |2907|13985 |794 |35322 |36844 |\n|2007-9          |Wales                   |744  |1623|13172 |0   |31035 |20073 |\n|2005-11         |South East              |0    |0   |1745  |0   |6062  |0     |\n|2004-4          |North West              |1737 |6667|37334 |0   |2708  |161686|\n|2001-7          |Wales                   |519  |235 |11792 |0   |18715 |22520 |\n|2004-4          |South West              |1315 |6409|31960 |0   |23247 |8087  |\n|2007-4          |South West              |810  |2447|17785 |0   |9439  |24201 |\n|2007-3          |Yorkshire and The Humber|974  |1878|20017 |0   |14890 |36445 |\n|2009-7          |West Midlands           |1607 |3370|12786 |0   |21090 |134081|\n|2018-6          |London                  |2305 |2023|86483 |0   |0     |0     |\n|2017-9          |East Midlands           |2935 |964 |22637 |0   |90457 |40729 |\n|2003-3          |Scotland                |1869 |3503|13422 |0   |36507 |26126 |\n|2001-5          |West Midlands           |2441 |1896|60841 |0   |53623 |84620 |\n|2002-3          |London                  |890  |449 |33013 |0   |0     |2224  |\n|2008-9          |East of England         |9441 |6270|73341 |0   |91839 |0     |\n|2007-10         |North West              |1773 |3108|67074 |0   |15564 |214032|\n|2007-7          |London                  |2227 |2414|42113 |0   |0     |0     |\n|2003-10         |Scotland                |1490 |717 |12954 |0   |14347 |16312 |\n|2016-3          |South West              |2306 |598 |0     |0   |0     |0     |\n|2016-3          |East of England         |1661 |1156|2355  |0   |0     |0     |\n|2017-3          |South West              |2283 |549 |13862 |0   |7796  |3095  |\n|2001-5          |Wales                   |627  |822 |18679 |0   |37832 |16524 |\n|2017-6          |North East              |515  |708 |18771 |0   |31556 |6256  |\n|2017-7          |London                  |1110 |585 |62402 |0   |0     |2128  |\n|2013-6          |West Midlands           |5482 |1456|33627 |0   |38235 |118581|\n|2018-7          |Scotland                |0    |0   |2414  |0   |0     |0     |\n|2018-6          |Wales                   |963  |682 |3238  |0   |15299 |18261 |\n|2018-3          |Wales                   |259  |397 |1569  |0   |3603  |0     |\n|2007-6          |East Midlands           |3904 |4988|31407 |0   |66479 |52863 |\n|2017-10         |South East              |3829 |2616|32620 |0   |18212 |62885 |\n|2015-5          |East Midlands           |1345 |969 |20966 |0   |58174 |0     |\n|2015-7          |West Midlands           |992  |2132|12935 |0   |23556 |17016 |\n|2010-4          |East of England         |2773 |2157|37739 |0   |31893 |0     |\n|2016-10         |East of England         |3873 |1906|30150 |0   |8378  |1595  |\n|2010-6          |North East              |895  |557 |26730 |2426|35707 |4693  |\n|2000-4          |West Midlands           |1676 |740 |22278 |0   |30106 |72349 |\n|2006-4          |Wales                   |418  |1421|10023 |0   |18556 |10199 |\n|2013-6          |Scotland                |1512 |1604|22468 |0   |0     |0     |\n|2014-5          |South West              |4096 |915 |11483 |0   |27242 |7132  |\n|2003-7          |North West              |1768 |2452|34019 |3217|23854 |119424|\n|2006-7          |Wales                   |921  |957 |10189 |0   |7073  |59574 |\n|2010-6          |Yorkshire and The Humber|1691 |2800|38209 |0   |16809 |168602|\n|2007-3          |Scotland                |2371 |3442|17663 |0   |11258 |1052  |\n|2012-3          |Scotland                |1817 |2198|14182 |0   |0     |0     |\n|2011-5          |West Midlands           |4022 |5805|32431 |0   |29596 |67748 |\n|2002-5          |West Midlands           |4811 |2923|79504 |0   |55405 |146192|\n|2010-3          |North East              |320  |1019|10631 |0   |0     |0     |\n|2000-4          |Yorkshire and The Humber|151  |1333|23404 |0   |25865 |59475 |\n|2000-10         |North West              |1476 |3710|64633 |0   |33968 |213672|\n|2005-7          |Yorkshire and The Humber|615  |1405|16281 |0   |647   |24861 |\n|2010-9          |South West              |3028 |1972|45455 |0   |16737 |0     |\n|2002-3          |South East              |1544 |596 |30118 |4077|42011 |22948 |\n|2017-9          |Scotland                |3345 |1517|1123  |0   |44913 |10758 |\n|2018-3          |Yorkshire and The Humber|604  |406 |0     |0   |0     |0     |\n|2004-9          |London                  |775  |5168|74268 |0   |0     |18420 |\n|2004-6          |West Midlands           |4871 |4685|51789 |0   |11207 |99281 |\n|2018-4          |East of England         |1025 |431 |23226 |0   |20571 |5525  |\n|2007-10         |Scotland                |1292 |1119|20016 |0   |31902 |68728 |\n|2011-9          |South West              |2603 |1266|22058 |0   |15373 |0     |\n|2007-7          |Scotland                |0    |0   |0     |0   |1366  |0     |\n|2016-3          |London                  |391  |416 |4598  |0   |0     |0     |\n|2017-3          |East Midlands           |687  |776 |8652  |0   |11697 |0     |\n|2009-6          |West Midlands           |11262|6050|47301 |3772|5819  |118071|\n|2018-9          |East Midlands           |3106 |1038|29710 |0   |26762 |0     |\n|2011-6          |North East              |601  |909 |9600  |0   |42039 |5987  |\n|2011-9          |Yorkshire and The Humber|2435 |2724|20576 |0   |13178 |5166  |\n|2012-7          |South East              |1382 |1868|33115 |0   |13289 |64667 |\n|2016-10         |London                  |3931 |2400|32949 |0   |0     |0     |\n|2012-4          |North West              |424  |740 |35304 |0   |7432  |85384 |\n|2013-9          |West Midlands           |3789 |2551|20402 |0   |18250 |61223 |\n|2002-3          |East of England         |1541 |997 |24483 |0   |28758 |28562 |\n|2001-5          |Yorkshire and The Humber|496  |2649|58489 |1585|41279 |162516|\n|2003-5          |South West              |1795 |2763|54679 |0   |25369 |33912 |\n|2017-3          |Scotland                |736  |728 |0     |0   |0     |0     |\n|2007-5          |London                  |2694 |5687|105067|0   |0     |10704 |\n|2000-6          |West Midlands           |2635 |2093|55744 |0   |56466 |162953|\n|2007-7          |East Midlands           |1694 |941 |18975 |0   |18701 |32681 |\n|2001-3          |London                  |423  |566 |87331 |0   |0     |524   |\n|2008-6          |Wales                   |2486 |3323|17296 |0   |42399 |56967 |\n|2018-4          |South West              |764  |112 |16778 |0   |3772  |0     |\n|2014-6          |South West              |3406 |1709|12444 |0   |13965 |30844 |\n|2003-4          |West Midlands           |3881 |2902|36361 |0   |29498 |62862 |\n|2000-9          |South East              |634  |1213|24701 |0   |14253 |38057 |\n|2006-3          |North West              |1753 |1633|24687 |0   |2748  |0     |\n|2005-3          |South West              |91   |184 |814   |0   |2492  |0     |\n|2015-9          |West Midlands           |1020 |2323|15014 |6333|21416 |45002 |\n|2012-3          |South West              |2426 |611 |6397  |0   |9587  |0     |\n|2000-4          |North East              |362  |841 |17867 |0   |21877 |0     |\n|2014-9          |Wales                   |1958 |619 |5102  |0   |19670 |29258 |\n|2012-10         |North West              |2799 |1703|62125 |3764|12301 |15659 |\n|2005-7          |East of England         |1210 |2209|15121 |0   |41374 |29870 |\n|2012-9          |North West              |1395 |1688|46981 |3701|4285  |121305|\n|2018-4          |North East              |29   |285 |10461 |0   |5633  |0     |\n|2012-9          |Wales                   |1973 |347 |8439  |0   |11089 |11373 |\n|2017-4          |South East              |369  |269 |29994 |1825|48625 |30667 |\n|2006-9          |Yorkshire and The Humber|1023 |2503|37190 |0   |8850  |147050|\n|2011-6          |West Midlands           |5313 |1481|23708 |4648|19495 |113809|\n|2001-6          |East Midlands           |1131 |1296|47601 |0   |122139|65991 |\n|2011-7          |North East              |612  |449 |9088  |0   |22500 |0     |\n|2006-9          |North East              |602  |1237|21116 |0   |39394 |0     |\n+----------------+------------------------+-----+----+------+----+------+------+\nonly showing top 100 rows\n\n\u001b[1m\u001b[34manalysis2DF\u001b[0m: \u001b[1m\u001b[32morg.apache.spark.sql.DataFrame\u001b[0m = [particular_month: string, region_name: string ... 6 more fields]\n"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {
+        "jobUrl": {
+          "propertyName": "jobUrl",
+          "label": "SPARK JOB",
+          "tooltip": "View in Spark web UI",
+          "group": "spark",
+          "values": [
+            {
+              "jobUrl": "http://my-cluster-m.europe-west4-a.c.put-big-data-2022-10-mc.internal:42179/jobs/job?id=159",
+              "$$hashKey": "object:1480"
+            },
+            {
+              "jobUrl": "http://my-cluster-m.europe-west4-a.c.put-big-data-2022-10-mc.internal:42179/jobs/job?id=160",
+              "$$hashKey": "object:1481"
+            },
+            {
+              "jobUrl": "http://my-cluster-m.europe-west4-a.c.put-big-data-2022-10-mc.internal:42179/jobs/job?id=161",
+              "$$hashKey": "object:1482"
+            },
+            {
+              "jobUrl": "http://my-cluster-m.europe-west4-a.c.put-big-data-2022-10-mc.internal:42179/jobs/job?id=162",
+              "$$hashKey": "object:1483"
+            },
+            {
+              "jobUrl": "http://my-cluster-m.europe-west4-a.c.put-big-data-2022-10-mc.internal:42179/jobs/job?id=166",
+              "$$hashKey": "object:1484"
+            },
+            {
+              "jobUrl": "http://my-cluster-m.europe-west4-a.c.put-big-data-2022-10-mc.internal:42179/jobs/job?id=167",
+              "$$hashKey": "object:1485"
+            },
+            {
+              "jobUrl": "http://my-cluster-m.europe-west4-a.c.put-big-data-2022-10-mc.internal:42179/jobs/job?id=168",
+              "$$hashKey": "object:1486"
+            },
+            {
+              "jobUrl": "http://my-cluster-m.europe-west4-a.c.put-big-data-2022-10-mc.internal:42179/jobs/job?id=169",
+              "$$hashKey": "object:1487"
+            },
+            {
+              "jobUrl": "http://my-cluster-m.europe-west4-a.c.put-big-data-2022-10-mc.internal:42179/jobs/job?id=170",
+              "$$hashKey": "object:1488"
+            },
+            {
+              "jobUrl": "http://my-cluster-m.europe-west4-a.c.put-big-data-2022-10-mc.internal:42179/jobs/job?id=171",
+              "$$hashKey": "object:1489"
+            },
+            {
+              "jobUrl": "http://my-cluster-m.europe-west4-a.c.put-big-data-2022-10-mc.internal:42179/jobs/job?id=172",
+              "$$hashKey": "object:1490"
+            },
+            {
+              "jobUrl": "http://my-cluster-m.europe-west4-a.c.put-big-data-2022-10-mc.internal:42179/jobs/job?id=173",
+              "$$hashKey": "object:1491"
+            },
+            {
+              "jobUrl": "http://my-cluster-m.europe-west4-a.c.put-big-data-2022-10-mc.internal:42179/jobs/job?id=177",
+              "$$hashKey": "object:1492"
+            },
+            {
+              "jobUrl": "http://my-cluster-m.europe-west4-a.c.put-big-data-2022-10-mc.internal:42179/jobs/job?id=178",
+              "$$hashKey": "object:1493"
+            },
+            {
+              "jobUrl": "http://my-cluster-m.europe-west4-a.c.put-big-data-2022-10-mc.internal:42179/jobs/job?id=179",
+              "$$hashKey": "object:1494"
+            }
+          ],
+          "interpreterSettingId": "spark"
+        }
+      },
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1673112447567_744129429",
+      "id": "paragraph_1671622379138_105447963",
+      "dateCreated": "2023-01-07T17:27:27+0000",
+      "dateStarted": "2023-01-18T15:36:36+0000",
+      "dateFinished": "2023-01-18T15:36:44+0000",
+      "status": "FINISHED",
+      "$$hashKey": "object:423"
+    },
+    {
+      "text": "val trucks_number = analysis2DF.\n    where($\"particular_month\" === z.textbox(\"particular month (yyyy-MM) e.g. 1990-7, 2002-10\"))\n\ntrucks_number.createOrReplaceTempView(\"analysis2_trucks_number\")",
+      "user": "anonymous",
+      "dateUpdated": "2023-01-18T15:37:31+0000",
+      "progress": 0,
+      "config": {
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/scala",
+        "fontSize": 9,
+        "results": {
+          "0": {
+            "graph": {
+              "mode": "table",
+              "height": 300,
+              "optionOpen": false,
+              "setting": {
+                "table": {
+                  "tableGridState": {},
+                  "tableColumnTypeState": {
+                    "names": {
+                      "count_point_id": "string",
+                      "direction_of_travel": "string",
+                      "road_name": "string",
+                      "road_type": "string",
+                      "pedal_cycles": "string",
+                      "two_wheeled_motor_vehicles": "string",
+                      "cars_and_taxis": "string",
+                      "buses_and_coaches": "string",
+                      "lgvs": "string",
+                      "all_hgvs": "string",
+                      "all_motor_vehicles": "string"
+                    },
+                    "updated": false
+                  },
+                  "tableOptionSpecHash": "[{\"name\":\"useFilter\",\"valueType\":\"boolean\",\"defaultValue\":false,\"widget\":\"checkbox\",\"description\":\"Enable filter for columns\"},{\"name\":\"showPagination\",\"valueType\":\"boolean\",\"defaultValue\":false,\"widget\":\"checkbox\",\"description\":\"Enable pagination for better navigation\"},{\"name\":\"showAggregationFooter\",\"valueType\":\"boolean\",\"defaultValue\":false,\"widget\":\"checkbox\",\"description\":\"Enable a footer for displaying aggregated values\"}]",
+                  "tableOptionValue": {
+                    "useFilter": false,
+                    "showPagination": false,
+                    "showAggregationFooter": false
+                  },
+                  "updated": false,
+                  "initialized": false
+                }
+              },
+              "commonSetting": {}
+            }
+          }
+        },
+        "enabled": true
+      },
+      "settings": {
+        "params": {
+          "particular month (yyyy-MM)": "2011-10",
+          "particular month (yyyy-MM) e.g. 1990-7, 2002-10": "2011-10"
+        },
+        "forms": {
+          "particular month (yyyy-MM) e.g. 1990-7, 2002-10": {
+            "type": "TextBox",
+            "name": "particular month (yyyy-MM) e.g. 1990-7, 2002-10",
+            "displayName": "particular month (yyyy-MM) e.g. 1990-7, 2002-10",
+            "defaultValue": "",
+            "hidden": false,
+            "$$hashKey": "object:804"
+          }
+        }
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "\u001b[1m\u001b[34mtrucks_number\u001b[0m: \u001b[1m\u001b[32morg.apache.spark.sql.Dataset[org.apache.spark.sql.Row]\u001b[0m = [particular_month: string, region_name: string ... 6 more fields]\n"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1673112447567_1016121475",
+      "id": "paragraph_1671563878389_1720868446",
+      "dateCreated": "2023-01-07T17:27:27+0000",
+      "dateStarted": "2023-01-18T15:37:31+0000",
+      "dateFinished": "2023-01-18T15:37:31+0000",
+      "status": "FINISHED",
+      "$$hashKey": "object:424"
+    },
+    {
+      "text": "%sql\nselect * from analysis2_trucks_number",
+      "user": "anonymous",
+      "dateUpdated": "2023-01-18T15:37:55+0000",
+      "progress": 25,
+      "config": {
+        "editorSetting": {
+          "completionKey": "TAB",
+          "editOnDblClick": false,
+          "completionSupport": true,
+          "language": "sql"
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/sql",
+        "fontSize": 9,
+        "results": {
+          "0": {
+            "graph": {
+              "mode": "multiBarChart",
+              "height": 300,
+              "optionOpen": false,
+              "setting": {
+                "table": {
+                  "tableGridState": {},
+                  "tableColumnTypeState": {
+                    "names": {
+                      "particular_month": "string",
+                      "region_name": "string",
+                      "MB": "string",
+                      "MCU": "string",
+                      "PA": "string",
+                      "PM": "string",
+                      "TA": "string",
+                      "TM": "string"
+                    },
+                    "updated": false
+                  },
+                  "tableOptionSpecHash": "[{\"name\":\"useFilter\",\"valueType\":\"boolean\",\"defaultValue\":false,\"widget\":\"checkbox\",\"description\":\"Enable filter for columns\"},{\"name\":\"showPagination\",\"valueType\":\"boolean\",\"defaultValue\":false,\"widget\":\"checkbox\",\"description\":\"Enable pagination for better navigation\"},{\"name\":\"showAggregationFooter\",\"valueType\":\"boolean\",\"defaultValue\":false,\"widget\":\"checkbox\",\"description\":\"Enable a footer for displaying aggregated values\"}]",
+                  "tableOptionValue": {
+                    "useFilter": false,
+                    "showPagination": false,
+                    "showAggregationFooter": false
+                  },
+                  "updated": false,
+                  "initialized": false
+                },
+                "multiBarChart": {
+                  "rotate": {
+                    "degree": "-45"
+                  },
+                  "xLabelStatus": "default",
+                  "stacked": false
+                }
+              },
+              "commonSetting": {},
+              "keys": [
+                {
+                  "name": "region_name",
+                  "index": 1,
+                  "aggr": "sum"
+                }
+              ],
+              "groups": [],
+              "values": [
+                {
+                  "name": "MB",
+                  "index": 2,
+                  "aggr": "sum"
+                },
+                {
+                  "name": "MCU",
+                  "index": 3,
+                  "aggr": "sum"
+                },
+                {
+                  "name": "PA",
+                  "index": 4,
+                  "aggr": "sum"
+                },
+                {
+                  "name": "PM",
+                  "index": 5,
+                  "aggr": "sum"
+                },
+                {
+                  "name": "TA",
+                  "index": 6,
+                  "aggr": "sum"
+                },
+                {
+                  "name": "TM",
+                  "index": 7,
+                  "aggr": "sum"
+                }
+              ]
+            },
+            "helium": {}
+          }
+        },
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TABLE",
+            "data": "particular_month\tregion_name\tMB\tMCU\tPA\tPM\tTA\tTM\n2011-10\tNorth East\t1717\t402\t11919\t0\t24225\t0\n2011-10\tSouth West\t2657\t2028\t21216\t0\t7902\t3902\n2011-10\tEast of England\t4520\t2151\t41642\t0\t62734\t18387\n2011-10\tWest Midlands\t3592\t1877\t22599\t0\t27490\t3896\n2011-10\tYorkshire and The Humber\t2780\t1070\t18677\t1176\t17326\t1928\n2011-10\tLondon\t7023\t5815\t85572\t0\t0\t0\n2011-10\tSouth East\t4338\t2697\t43935\t0\t41704\t9371\n2011-10\tScotland\t1259\t643\t42781\t0\t0\t0\n2011-10\tEast Midlands\t2921\t1619\t23260\t0\t19780\t10610\n2011-10\tWales\t1295\t1026\t4053\t0\t26918\t3350\n2011-10\tNorth West\t2840\t2206\t47227\t0\t9785\t13993\n"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {
+        "jobUrl": {
+          "propertyName": "jobUrl",
+          "label": "SPARK JOB",
+          "tooltip": "View in Spark web UI",
+          "group": "spark",
+          "values": [
+            {
+              "jobUrl": "http://my-cluster-m.europe-west4-a.c.put-big-data-2022-10-mc.internal:42179/jobs/job?id=180",
+              "$$hashKey": "object:1636"
+            },
+            {
+              "jobUrl": "http://my-cluster-m.europe-west4-a.c.put-big-data-2022-10-mc.internal:42179/jobs/job?id=181",
+              "$$hashKey": "object:1637"
+            },
+            {
+              "jobUrl": "http://my-cluster-m.europe-west4-a.c.put-big-data-2022-10-mc.internal:42179/jobs/job?id=182",
+              "$$hashKey": "object:1638"
+            },
+            {
+              "jobUrl": "http://my-cluster-m.europe-west4-a.c.put-big-data-2022-10-mc.internal:42179/jobs/job?id=183",
+              "$$hashKey": "object:1639"
+            },
+            {
+              "jobUrl": "http://my-cluster-m.europe-west4-a.c.put-big-data-2022-10-mc.internal:42179/jobs/job?id=187",
+              "$$hashKey": "object:1640"
+            },
+            {
+              "jobUrl": "http://my-cluster-m.europe-west4-a.c.put-big-data-2022-10-mc.internal:42179/jobs/job?id=188",
+              "$$hashKey": "object:1641"
+            },
+            {
+              "jobUrl": "http://my-cluster-m.europe-west4-a.c.put-big-data-2022-10-mc.internal:42179/jobs/job?id=189",
+              "$$hashKey": "object:1642"
+            }
+          ],
+          "interpreterSettingId": "spark"
+        }
+      },
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1673112447567_1762157817",
+      "id": "paragraph_1671621765342_1865614150",
+      "dateCreated": "2023-01-07T17:27:27+0000",
+      "dateStarted": "2023-01-18T15:37:37+0000",
+      "dateFinished": "2023-01-18T15:37:41+0000",
+      "status": "FINISHED",
+      "$$hashKey": "object:425"
+    },
+    {
+      "text": "%md\n**3. Number of vehicles (measure) in the following regions (first dimension), divided by moving directions (second dimension) for a chosen hour (third dimension).**",
+      "user": "anonymous",
+      "dateUpdated": "2023-01-18T09:00:59+0000",
+      "progress": 0,
+      "config": {
+        "tableHide": false,
+        "editorSetting": {
+          "completionKey": "TAB",
+          "editOnDblClick": true,
+          "completionSupport": false,
+          "language": "markdown"
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/markdown",
+        "fontSize": 9,
+        "editorHide": true,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "HTML",
+            "data": "<div class=\"markdown-body\">\n<p><strong>3. Number of vehicles (measure) in the following regions (first dimension), divided by moving directions (second dimension) for a chosen hour (third dimension).</strong></p>\n\n</div>"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1673112447568_315437066",
+      "id": "paragraph_1671621801706_931455971",
+      "dateCreated": "2023-01-07T17:27:27+0000",
+      "dateStarted": "2023-01-18T09:00:59+0000",
+      "dateFinished": "2023-01-18T09:00:59+0000",
+      "status": "FINISHED",
+      "$$hashKey": "object:426"
+    },
+    {
+      "text": "val factDF = spark.read.format(\"delta\").load(\"/tmp/delta/fact\")\n                            .select(\"region_auth_id\", \"timestamp_id\", \"sum_all_vehicles\", \"direction_id\")\nval timeDF = spark.read.format(\"delta\").load(\"/tmp/delta/dim_time\")\n                            .select(\"timestamp_id\", \"year\", \"month\", \"day\", \"hour\")\nval regionsDF = spark.read.format(\"delta\").load(\"/tmp/delta/dim_regions\")\n                            .select(\"region_auth_id\", \"region_name\")\nval directionsDF = spark.read.format(\"delta\").load(\"/tmp/delta/dim_directions\")",
+      "user": "anonymous",
+      "dateUpdated": "2023-01-18T15:41:11+0000",
+      "progress": 72,
+      "config": {
+        "editorSetting": {
+          "completionKey": "TAB",
+          "editOnDblClick": false,
+          "completionSupport": true,
+          "language": "scala"
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/scala",
+        "fontSize": 9,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "\u001b[1m\u001b[34mfactDF\u001b[0m: \u001b[1m\u001b[32morg.apache.spark.sql.DataFrame\u001b[0m = [region_auth_id: int, timestamp_id: int ... 2 more fields]\n\u001b[1m\u001b[34mtimeDF\u001b[0m: \u001b[1m\u001b[32morg.apache.spark.sql.DataFrame\u001b[0m = [timestamp_id: bigint, year: int ... 3 more fields]\n\u001b[1m\u001b[34mregionsDF\u001b[0m: \u001b[1m\u001b[32morg.apache.spark.sql.DataFrame\u001b[0m = [region_auth_id: int, region_name: string]\n\u001b[1m\u001b[34mdirectionsDF\u001b[0m: \u001b[1m\u001b[32morg.apache.spark.sql.DataFrame\u001b[0m = [direction_of_travel: string, direction_id: int]\n"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1673112447568_414630101",
+      "id": "paragraph_1672408316451_1668869138",
+      "dateCreated": "2023-01-07T17:27:27+0000",
+      "dateStarted": "2023-01-18T15:41:11+0000",
+      "dateFinished": "2023-01-18T15:41:12+0000",
+      "status": "FINISHED",
+      "$$hashKey": "object:427"
+    },
+    {
+      "text": "val analysis3DF = factDF.\n    join(regionsDF, \"region_auth_id\").\n    join(timeDF, \"timestamp_id\").\n    join(directionsDF, \"direction_id\").\n    groupBy(col(\"hour\"), col(\"region_name\")).\n    pivot(\"direction_of_travel\").\n    agg(sum(\"sum_all_vehicles\").as(\"sum_all_vehicles\")).na.\n    fill(0)\n    \nanalysis3DF.show(100, false)",
+      "user": "anonymous",
+      "dateUpdated": "2023-01-18T15:41:53+0000",
+      "progress": 0,
+      "config": {
+        "editorSetting": {
+          "completionKey": "TAB",
+          "editOnDblClick": false,
+          "completionSupport": true,
+          "language": "scala"
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/scala",
+        "fontSize": 9,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "+----+------------------------+-----+--------+---+--------+--------+--------+-----+-----+-----+-----+\n|hour|region_name             |C    |E       |J  |N       |S       |W       |e    |n    |s    |w    |\n+----+------------------------+-----+--------+---+--------+--------+--------+-----+-----+-----+-----+\n|8   |South East              |0    |10656356|0  |10341806|9728342 |10516520|0    |3393 |1742 |737  |\n|16  |Wales                   |1400 |2836378 |336|2524953 |2248221 |3052079 |0    |3806 |426  |88   |\n|11  |West Midlands           |0    |2609215 |0  |4892592 |4955801 |2625591 |0    |158  |0    |1595 |\n|8   |South West              |0    |4148844 |961|4401205 |4378927 |3911483 |0    |0    |0    |1318 |\n|14  |North East              |4142 |1544244 |0  |2297047 |2349331 |1550164 |0    |0    |0    |1277 |\n|12  |London                  |0    |5186239 |0  |4257577 |4226232 |5073213 |26   |0    |6182 |0    |\n|14  |East Midlands           |0    |2498751 |570|4018488 |3853843 |2508239 |7837 |7674 |10548|8108 |\n|17  |North West              |5665 |7065576 |0  |8838589 |8469470 |7199938 |22131|15444|17715|23950|\n|17  |East Midlands           |0    |3414153 |763|5353234 |4967453 |3353416 |11251|10829|14410|11501|\n|14  |Yorkshire and The Humber|0    |3394087 |0  |4083070 |4256757 |3392942 |42   |98   |337  |663  |\n|8   |North West              |5234 |6902865 |0  |8252503 |8386810 |6891566 |24257|14798|16275|23535|\n|18  |London                  |0    |6516643 |0  |5245881 |5226031 |6113707 |33   |0    |7016 |0    |\n|5   |Wales                   |0    |5       |0  |0       |0       |0       |0    |0    |0    |0    |\n|9   |North East              |3869 |1509848 |0  |2312569 |2219727 |1479241 |0    |0    |0    |1231 |\n|13  |West Midlands           |0    |2826111 |0  |5404322 |5263430 |2864811 |0    |159  |0    |1661 |\n|15  |North East              |4994 |1731334 |0  |2598635 |2658662 |1767690 |0    |0    |0    |1533 |\n|16  |South West              |0    |3968696 |913|4375412 |4453782 |4089548 |0    |0    |0    |1377 |\n|11  |East Midlands           |0    |2192731 |485|3429625 |3483047 |2225653 |6874 |6612 |9290 |7031 |\n|8   |North East              |4989 |2037728 |0  |3042296 |2894180 |1950794 |0    |0    |0    |1865 |\n|9   |London                  |0    |5553588 |0  |4686474 |4726477 |5774898 |29   |0    |8209 |0    |\n|0   |Wales                   |0    |0       |0  |0       |0       |0       |0    |19344|0    |0    |\n|8   |East of England         |14   |5439703 |0  |5649042 |6290668 |5976139 |0    |0    |4603 |3433 |\n|15  |South West              |0    |3535428 |868|3893103 |3897897 |3580090 |0    |0    |0    |1244 |\n|17  |South East              |0    |11127094|0  |9773237 |10629434|10752420|0    |2788 |1315 |597  |\n|9   |South West              |0    |3221720 |790|3444073 |3463614 |3098336 |0    |0    |0    |1126 |\n|13  |Scotland                |55773|1808477 |0  |1786181 |1852580 |1853907 |0    |0    |0    |0    |\n|18  |Scotland                |51171|1886120 |0  |1844790 |1929203 |1950363 |0    |0    |0    |0    |\n|16  |North East              |5251 |1990776 |0  |3039245 |3059344 |2045885 |0    |0    |0    |2127 |\n|10  |West Midlands           |0    |2568181 |0  |4764764 |4900125 |2579722 |0    |179  |0    |1329 |\n|17  |North East              |5706 |1995008 |0  |3031542 |3033141 |2025850 |0    |0    |0    |1879 |\n|10  |North East              |3551 |1319168 |0  |2041781 |2008467 |1337605 |0    |0    |0    |1087 |\n|17  |Wales                   |1590 |2845251 |262|2566473 |2301385 |3176311 |0    |3463 |345  |87   |\n|12  |North West              |4840 |4919146 |0  |6041698 |6092645 |4907299 |14679|10430|11562|14300|\n|8   |West Midlands           |0    |3829495 |0  |6835661 |7129547 |3731160 |0    |221  |0    |1480 |\n|7   |North East              |2657 |1686047 |0  |2648806 |2666944 |1716914 |0    |0    |0    |1665 |\n|18  |South West              |0    |3079591 |682|3428702 |3672744 |3346219 |0    |0    |0    |996  |\n|13  |North West              |5014 |5144717 |0  |6286887 |6312626 |5098435 |15276|11186|12563|14616|\n|13  |East Midlands           |0    |2393613 |532|3820376 |3743087 |2440498 |7304 |7476 |9972 |7761 |\n|9   |Wales                   |1304 |2254461 |290|1709685 |1885064 |2206454 |0    |2640 |250  |54   |\n|14  |South East              |0    |7983729 |0  |7339912 |7413825 |7871263 |0    |1951 |900  |435  |\n|15  |East of England         |15   |5091683 |0  |5376815 |4803720 |4651655 |0    |0    |2631 |1836 |\n|18  |East of England         |15   |5070186 |0  |5452296 |4599978 |4348196 |0    |0    |2401 |1620 |\n|11  |East of England         |26   |3930144 |0  |4178122 |4119402 |3952848 |0    |0    |2615 |1486 |\n|14  |Scotland                |56898|1874943 |0  |1852820 |1927582 |1934719 |0    |0    |0    |0    |\n|13  |Wales                   |1344 |2198013 |228|1766718 |1757189 |2165819 |0    |2969 |317  |46   |\n|7   |Scotland                |46116|2066541 |0  |2003923 |1827775 |2004779 |0    |0    |0    |0    |\n|13  |North East              |4210 |1500344 |0  |2215077 |2259837 |1496220 |0    |0    |0    |1214 |\n|15  |Yorkshire and The Humber|0    |3750517 |0  |4442661 |4714188 |3729231 |40   |100  |384  |615  |\n|13  |London                  |0    |5322126 |0  |4332484 |4301237 |5163973 |29   |0    |6152 |0    |\n|13  |South West              |0    |3133013 |702|3455116 |3396330 |3123575 |0    |0    |0    |1105 |\n|9   |Yorkshire and The Humber|0    |3314899 |0  |4115475 |3951407 |3375680 |58   |72   |204  |638  |\n|7   |Yorkshire and The Humber|0    |3826045 |0  |4812941 |4539849 |3963553 |48   |76   |321  |871  |\n|10  |Yorkshire and The Humber|0    |3041178 |0  |3675424 |3633917 |2994813 |38   |82   |236  |605  |\n|18  |West Midlands           |0    |2914506 |0  |5862663 |5537859 |3216089 |0    |242  |0    |173  |\n|16  |East Midlands           |0    |3204009 |741|5090737 |4746003 |3187291 |10818|9732 |13558|10503|\n|14  |North West              |5092 |5303188 |0  |6533419 |6468884 |5249093 |15401|10883|12592|15271|\n|9   |North West              |4504 |5340263 |0  |6424501 |6565039 |5349600 |16078|11294|12090|15786|\n|3   |East of England         |0    |0       |0  |0       |0       |31      |0    |0    |0    |0    |\n|11  |London                  |0    |5065284 |0  |4151573 |4168315 |5013771 |34   |0    |4038 |0    |\n|17  |Scotland                |71408|2403414 |0  |2366096 |2498081 |2453891 |0    |0    |0    |0    |\n|18  |Wales                   |1105 |2022340 |265|1865591 |1735245 |2415310 |0    |2678 |360  |90   |\n|14  |West Midlands           |0    |2906384 |0  |5631394 |5388172 |2965519 |0    |187  |0    |1664 |\n|16  |South East              |0    |10288706|0  |9171407 |9705912 |10069091|0    |2661 |1244 |616  |\n|7   |East of England         |11   |4790976 |0  |4825015 |5984449 |5658406 |0    |0    |4362 |3320 |\n|7   |South East              |0    |9848958 |0  |9785264 |8527963 |9745131 |0    |3526 |1509 |724  |\n|7   |South West              |0    |3537816 |507|3829803 |3598943 |3140660 |0    |0    |0    |1121 |\n|14  |East of England         |14   |4534159 |0  |4812260 |4383365 |4239796 |0    |0    |2442 |1897 |\n|9   |West Midlands           |0    |2922889 |0  |5346639 |5517669 |2893059 |0    |195  |0    |1361 |\n|16  |East of England         |25   |5889817 |0  |6226000 |5384598 |5237940 |0    |0    |2874 |1955 |\n|15  |London                  |0    |5979459 |0  |4865955 |4791930 |5618244 |59   |0    |6602 |0    |\n|12  |North East              |4312 |1432416 |0  |2138213 |2168309 |1449194 |0    |0    |0    |1155 |\n|8   |Wales                   |1572 |3005740 |324|2259755 |2478801 |2837426 |0    |3914 |399  |99   |\n|8   |Scotland                |63152|2397403 |0  |2353048 |2244056 |2373895 |0    |0    |0    |0    |\n|11  |Scotland                |52402|1683682 |0  |1666908 |1710985 |1689196 |0    |0    |0    |0    |\n|12  |East of England         |14   |4073071 |0  |4341837 |4187024 |4025935 |0    |0    |2478 |1658 |\n|7   |North West              |3681 |6243056 |0  |7023649 |7499622 |6061101 |17426|12253|12716|15873|\n|12  |South East              |0    |7401413 |0  |6951132 |6936580 |7437352 |0    |1884 |936  |394  |\n|16  |West Midlands           |0    |3606966 |0  |7092896 |6672044 |3816402 |0    |272  |0    |1471 |\n|7   |Wales                   |477  |2579380 |103|1616249 |2010123 |2160413 |0    |2504 |109  |40   |\n|7   |London                  |0    |5889942 |0  |4980531 |5055582 |6518953 |98   |0    |9395 |0    |\n|12  |South West              |0    |3120002 |696|3413845 |3342672 |3086264 |0    |0    |495  |1158 |\n|18  |North East              |4401 |1478662 |0  |2281678 |2204429 |1476612 |0    |0    |0    |1373 |\n|10  |East of England         |9    |3867654 |0  |4039275 |4240903 |3994085 |0    |0    |2298 |1680 |\n|11  |North West              |4566 |4707361 |0  |5814518 |5870838 |4752799 |14218|10120|10913|13687|\n|12  |Wales                   |1266 |2123568 |231|1695687 |1703669 |2109264 |0    |2447 |358  |59   |\n|7   |West Midlands           |0    |3494399 |0  |5907328 |6532114 |3132232 |0    |204  |0    |1857 |\n|8   |London                  |0    |6329071 |0  |5438522 |5412306 |6699050 |96   |0    |9205 |0    |\n|18  |South East              |0    |9185434 |0  |8030827 |9002991 |8814460 |0    |2231 |1021 |474  |\n|17  |West Midlands           |0    |3753391 |0  |7398906 |7000577 |4032723 |0    |333  |0    |1840 |\n|12  |West Midlands           |0    |2737620 |0  |5160341 |5110427 |2747854 |0    |164  |0    |1688 |\n|4   |Wales                   |0    |576     |0  |0       |0       |0       |0    |0    |0    |0    |\n|10  |Wales                   |1049 |2011237 |235|1535063 |1617063 |1982469 |0    |2335 |307  |49   |\n|16  |North West              |5910 |6873107 |0  |8514208 |8214398 |6927229 |19668|14157|16975|21043|\n|17  |South West              |0    |4114132 |922|4554322 |4746235 |4352168 |0    |0    |0    |1321 |\n|9   |East Midlands           |0    |2472477 |550|3715777 |3977263 |2505623 |8124 |7157 |12280|8187 |\n|10  |East Midlands           |0    |2180038 |474|3352263 |3492802 |2199920 |7012 |6414 |9472 |7034 |\n|15  |Wales                   |1399 |2514029 |359|2169623 |1998712 |2573995 |0    |3744 |396  |117  |\n|15  |West Midlands           |0    |3208036 |0  |6198943 |5881887 |3319930 |0    |198  |0    |1582 |\n|10  |North West              |4520 |4629838 |0  |5678949 |5765682 |4701037 |13657|10439|10387|13358|\n|9   |Scotland                |50932|1819796 |0  |1802369 |1743424 |1811568 |0    |0    |0    |0    |\n+----+------------------------+-----+--------+---+--------+--------+--------+-----+-----+-----+-----+\nonly showing top 100 rows\n\n\u001b[1m\u001b[34manalysis3DF\u001b[0m: \u001b[1m\u001b[32morg.apache.spark.sql.DataFrame\u001b[0m = [hour: int, region_name: string ... 10 more fields]\n"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {
+        "jobUrl": {
+          "propertyName": "jobUrl",
+          "label": "SPARK JOB",
+          "tooltip": "View in Spark web UI",
+          "group": "spark",
+          "values": [
+            {
+              "jobUrl": "http://my-cluster-m.europe-west4-a.c.put-big-data-2022-10-mc.internal:42179/jobs/job?id=214",
+              "$$hashKey": "object:1792"
+            },
+            {
+              "jobUrl": "http://my-cluster-m.europe-west4-a.c.put-big-data-2022-10-mc.internal:42179/jobs/job?id=215",
+              "$$hashKey": "object:1793"
+            },
+            {
+              "jobUrl": "http://my-cluster-m.europe-west4-a.c.put-big-data-2022-10-mc.internal:42179/jobs/job?id=216",
+              "$$hashKey": "object:1794"
+            },
+            {
+              "jobUrl": "http://my-cluster-m.europe-west4-a.c.put-big-data-2022-10-mc.internal:42179/jobs/job?id=217",
+              "$$hashKey": "object:1795"
+            },
+            {
+              "jobUrl": "http://my-cluster-m.europe-west4-a.c.put-big-data-2022-10-mc.internal:42179/jobs/job?id=221",
+              "$$hashKey": "object:1796"
+            },
+            {
+              "jobUrl": "http://my-cluster-m.europe-west4-a.c.put-big-data-2022-10-mc.internal:42179/jobs/job?id=222",
+              "$$hashKey": "object:1797"
+            },
+            {
+              "jobUrl": "http://my-cluster-m.europe-west4-a.c.put-big-data-2022-10-mc.internal:42179/jobs/job?id=223",
+              "$$hashKey": "object:1798"
+            },
+            {
+              "jobUrl": "http://my-cluster-m.europe-west4-a.c.put-big-data-2022-10-mc.internal:42179/jobs/job?id=224",
+              "$$hashKey": "object:1799"
+            },
+            {
+              "jobUrl": "http://my-cluster-m.europe-west4-a.c.put-big-data-2022-10-mc.internal:42179/jobs/job?id=225",
+              "$$hashKey": "object:1800"
+            },
+            {
+              "jobUrl": "http://my-cluster-m.europe-west4-a.c.put-big-data-2022-10-mc.internal:42179/jobs/job?id=226",
+              "$$hashKey": "object:1801"
+            },
+            {
+              "jobUrl": "http://my-cluster-m.europe-west4-a.c.put-big-data-2022-10-mc.internal:42179/jobs/job?id=227",
+              "$$hashKey": "object:1802"
+            },
+            {
+              "jobUrl": "http://my-cluster-m.europe-west4-a.c.put-big-data-2022-10-mc.internal:42179/jobs/job?id=228",
+              "$$hashKey": "object:1803"
+            },
+            {
+              "jobUrl": "http://my-cluster-m.europe-west4-a.c.put-big-data-2022-10-mc.internal:42179/jobs/job?id=232",
+              "$$hashKey": "object:1804"
+            },
+            {
+              "jobUrl": "http://my-cluster-m.europe-west4-a.c.put-big-data-2022-10-mc.internal:42179/jobs/job?id=233",
+              "$$hashKey": "object:1805"
+            },
+            {
+              "jobUrl": "http://my-cluster-m.europe-west4-a.c.put-big-data-2022-10-mc.internal:42179/jobs/job?id=234",
+              "$$hashKey": "object:1806"
+            }
+          ],
+          "interpreterSettingId": "spark"
+        }
+      },
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1673112447568_185650966",
+      "id": "paragraph_1672408300236_454116803",
+      "dateCreated": "2023-01-07T17:27:27+0000",
+      "dateStarted": "2023-01-18T15:41:53+0000",
+      "dateFinished": "2023-01-18T15:41:59+0000",
+      "status": "FINISHED",
+      "$$hashKey": "object:428"
+    },
+    {
+      "text": "val trucks_number_directions_based = analysis3DF.\n    where($\"hour\" === z.textbox(\"Particular hour (from 0 to 23)\"))\n\ntrucks_number_directions_based.createOrReplaceTempView(\"analysis3_trucks_number_directions_based\")",
+      "user": "anonymous",
+      "dateUpdated": "2023-01-18T15:43:05+0000",
+      "progress": 0,
+      "config": {
+        "editorSetting": {
+          "completionKey": "TAB",
+          "editOnDblClick": false,
+          "completionSupport": true,
+          "language": "scala"
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/scala",
+        "fontSize": 9,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {
+          "Particular hour (from 0 to 23)": "17"
+        },
+        "forms": {
+          "Particular hour (from 0 to 23)": {
+            "type": "TextBox",
+            "name": "Particular hour (from 0 to 23)",
+            "displayName": "Particular hour (from 0 to 23)",
+            "defaultValue": "",
+            "hidden": false,
+            "$$hashKey": "object:831"
+          }
+        }
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "\u001b[1m\u001b[34mtrucks_number_directions_based\u001b[0m: \u001b[1m\u001b[32morg.apache.spark.sql.Dataset[org.apache.spark.sql.Row]\u001b[0m = [hour: int, region_name: string ... 10 more fields]\n"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1673112447568_1528567644",
+      "id": "paragraph_1672485577641_1752198745",
+      "dateCreated": "2023-01-07T17:27:27+0000",
+      "dateStarted": "2023-01-18T15:43:05+0000",
+      "dateFinished": "2023-01-18T15:43:06+0000",
+      "status": "FINISHED",
+      "$$hashKey": "object:429"
+    },
+    {
+      "text": "%sql\nselect * from analysis3_trucks_number_directions_based",
+      "user": "anonymous",
+      "dateUpdated": "2023-01-18T15:43:56+0000",
+      "progress": 0,
+      "config": {
+        "editorSetting": {
+          "completionKey": "TAB",
+          "editOnDblClick": false,
+          "completionSupport": true,
+          "language": "sql"
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/sql",
+        "fontSize": 9,
+        "results": {
+          "0": {
+            "graph": {
+              "mode": "multiBarChart",
+              "height": 300,
+              "optionOpen": false,
+              "setting": {
+                "table": {
+                  "tableGridState": {},
+                  "tableColumnTypeState": {
+                    "names": {
+                      "hour": "string",
+                      "region_name": "string",
+                      "E": "string",
+                      "N": "string",
+                      "S": "string",
+                      "W": "string",
+                      "e": "string",
+                      "n": "string",
+                      "s": "string",
+                      "w": "string"
+                    },
+                    "updated": false
+                  },
+                  "tableOptionSpecHash": "[{\"name\":\"useFilter\",\"valueType\":\"boolean\",\"defaultValue\":false,\"widget\":\"checkbox\",\"description\":\"Enable filter for columns\"},{\"name\":\"showPagination\",\"valueType\":\"boolean\",\"defaultValue\":false,\"widget\":\"checkbox\",\"description\":\"Enable pagination for better navigation\"},{\"name\":\"showAggregationFooter\",\"valueType\":\"boolean\",\"defaultValue\":false,\"widget\":\"checkbox\",\"description\":\"Enable a footer for displaying aggregated values\"}]",
+                  "tableOptionValue": {
+                    "useFilter": false,
+                    "showPagination": false,
+                    "showAggregationFooter": false
+                  },
+                  "updated": false,
+                  "initialized": false
+                },
+                "multiBarChart": {
+                  "rotate": {
+                    "degree": "-45"
+                  },
+                  "xLabelStatus": "default"
+                }
+              },
+              "commonSetting": {},
+              "keys": [
+                {
+                  "name": "region_name",
+                  "index": 1,
+                  "aggr": "sum"
+                }
+              ],
+              "groups": [],
+              "values": [
+                {
+                  "name": "C",
+                  "index": 2,
+                  "aggr": "sum"
+                },
+                {
+                  "name": "E",
+                  "index": 3,
+                  "aggr": "sum"
+                },
+                {
+                  "name": "J",
+                  "index": 4,
+                  "aggr": "sum"
+                },
+                {
+                  "name": "N",
+                  "index": 5,
+                  "aggr": "sum"
+                },
+                {
+                  "name": "S",
+                  "index": 6,
+                  "aggr": "sum"
+                },
+                {
+                  "name": "W",
+                  "index": 7,
+                  "aggr": "sum"
+                },
+                {
+                  "name": "e",
+                  "index": 8,
+                  "aggr": "sum"
+                },
+                {
+                  "name": "n",
+                  "index": 9,
+                  "aggr": "sum"
+                },
+                {
+                  "name": "s",
+                  "index": 10,
+                  "aggr": "sum"
+                },
+                {
+                  "name": "w",
+                  "index": 11,
+                  "aggr": "sum"
+                }
+              ]
+            },
+            "helium": {}
+          }
+        },
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TABLE",
+            "data": "hour\tregion_name\tC\tE\tJ\tN\tS\tW\te\tn\ts\tw\n17\tNorth West\t5665\t7065576\t0\t8838589\t8469470\t7199938\t22131\t15444\t17715\t23950\n17\tEast Midlands\t0\t3414153\t763\t5353234\t4967453\t3353416\t11251\t10829\t14410\t11501\n17\tSouth East\t0\t11127094\t0\t9773237\t10629434\t10752420\t0\t2788\t1315\t597\n17\tNorth East\t5706\t1995008\t0\t3031542\t3033141\t2025850\t0\t0\t0\t1879\n17\tWales\t1590\t2845251\t262\t2566473\t2301385\t3176311\t0\t3463\t345\t87\n17\tScotland\t71408\t2403414\t0\t2366096\t2498081\t2453891\t0\t0\t0\t0\n17\tWest Midlands\t0\t3753391\t0\t7398906\t7000577\t4032723\t0\t333\t0\t1840\n17\tSouth West\t0\t4114132\t922\t4554322\t4746235\t4352168\t0\t0\t0\t1321\n17\tYorkshire and The Humber\t0\t4501472\t0\t5225691\t5471760\t4307322\t41\t101\t472\t589\n17\tLondon\t0\t6909912\t0\t5537380\t5488449\t6417685\t48\t0\t8221\t0\n17\tEast of England\t21\t6336599\t0\t6707327\t5747310\t5573143\t0\t0\t2923\t2254\n"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {
+        "jobUrl": {
+          "propertyName": "jobUrl",
+          "label": "SPARK JOB",
+          "tooltip": "View in Spark web UI",
+          "group": "spark",
+          "values": [
+            {
+              "jobUrl": "http://my-cluster-m.europe-west4-a.c.put-big-data-2022-10-mc.internal:42179/jobs/job?id=235",
+              "$$hashKey": "object:1948"
+            },
+            {
+              "jobUrl": "http://my-cluster-m.europe-west4-a.c.put-big-data-2022-10-mc.internal:42179/jobs/job?id=236",
+              "$$hashKey": "object:1949"
+            },
+            {
+              "jobUrl": "http://my-cluster-m.europe-west4-a.c.put-big-data-2022-10-mc.internal:42179/jobs/job?id=237",
+              "$$hashKey": "object:1950"
+            },
+            {
+              "jobUrl": "http://my-cluster-m.europe-west4-a.c.put-big-data-2022-10-mc.internal:42179/jobs/job?id=238",
+              "$$hashKey": "object:1951"
+            },
+            {
+              "jobUrl": "http://my-cluster-m.europe-west4-a.c.put-big-data-2022-10-mc.internal:42179/jobs/job?id=242",
+              "$$hashKey": "object:1952"
+            },
+            {
+              "jobUrl": "http://my-cluster-m.europe-west4-a.c.put-big-data-2022-10-mc.internal:42179/jobs/job?id=243",
+              "$$hashKey": "object:1953"
+            },
+            {
+              "jobUrl": "http://my-cluster-m.europe-west4-a.c.put-big-data-2022-10-mc.internal:42179/jobs/job?id=244",
+              "$$hashKey": "object:1954"
+            }
+          ],
+          "interpreterSettingId": "spark"
+        }
+      },
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1674032175796_1502691033",
+      "id": "paragraph_1674032175796_1502691033",
+      "dateCreated": "2023-01-18T08:56:15+0000",
+      "dateStarted": "2023-01-18T15:43:08+0000",
+      "dateFinished": "2023-01-18T15:43:11+0000",
+      "status": "FINISHED",
+      "$$hashKey": "object:430"
+    },
+    {
+      "text": "%sql\n",
+      "user": "anonymous",
+      "dateUpdated": "2023-01-18T08:56:38+0000",
+      "progress": 0,
+      "config": {
+        "colWidth": 12,
+        "fontSize": 9,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "completionKey": "TAB",
+          "editOnDblClick": false,
+          "completionSupport": true,
+          "language": "sql"
+        },
+        "editorMode": "ace/mode/sql"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1674032198754_1197717578",
+      "id": "paragraph_1674032198754_1197717578",
+      "dateCreated": "2023-01-18T08:56:38+0000",
+      "status": "READY",
+      "$$hashKey": "object:431"
+    }
+  ],
+  "name": "Final_analysis_results",
+  "id": "2HQPKKTVQ",
+  "defaultInterpreterGroup": "spark",
+  "version": "0.10.1",
+  "noteParams": {},
+  "noteForms": {},
+  "angularObjects": {},
+  "config": {
+    "isZeppelinNotebookCronEnable": false,
+    "looknfeel": "default",
+    "personalizedMode": "false"
+  },
+  "info": {},
+  "path": "/Final_analysis_results"
+}
